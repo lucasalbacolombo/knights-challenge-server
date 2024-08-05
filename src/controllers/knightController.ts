@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { validationResult } from "express-validator";
 import knightModel from "../models/Knight.model";
 
 const knightsController = {
@@ -16,7 +15,7 @@ const knightsController = {
     try {
       const knight = await knightModel.findById(req.params.id);
       if (!knight) {
-        return res.status(404).json({ error: "Knight not found" });
+        return res.status(404).json({ error: "Knight does not exist." });
       }
       res.json(knight);
     } catch (error) {
@@ -42,7 +41,7 @@ const knightsController = {
         { new: true }
       );
       if (!updatedKnight) {
-        return res.status(404).json({ error: "Knight not found" });
+        return res.status(404).json({ error: "Knight does not exist." });
       }
       res.json(updatedKnight);
     } catch (error) {
@@ -58,9 +57,11 @@ const knightsController = {
         { new: true }
       );
       if (!knight) {
-        return res.status(404).json({ error: "Knight not found" });
+        return res.status(404).json({ error: "Knight does not exist." });
       }
-      res.json({ message: "Knight deleted and added to Hall of Fame" });
+      res.json({
+        message: "This Knight was deleted and added to Hall of Fame!",
+      });
     } catch (error) {
       return next(error);
     }
